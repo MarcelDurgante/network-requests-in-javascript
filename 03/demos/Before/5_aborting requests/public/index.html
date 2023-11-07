@@ -117,8 +117,34 @@
                     // So I have a reader, and I get this by accessing the response, then its body, so the actual data being sent as part of the HTTP response, and then I can do getReader(). That doesn't give me the full body, but a reader object that allows me to read chunk by chunk. 
                     const reader = response.body.getReader(); 
                     // Now, when I'm requesting a resource on a server, the server can send me, as a piece of information, the length of the data being sent. That's what also enables the progress bar when downloading something in your browser, and that's put in the content length HTTP header. So, we do total, so the total amount of bytes being spected, as the value in the response headers, and the header name is Content‑Length. And if we don't have that, we just assume it's 0. 
-                    const total = response.headers.get('Content-Length')
-                });
+                    const total = response.headers.get('Content-Length') || 0;
+                    // So I work with chunks, so I define an array for that
+                    let chunks = [];
+                    //  I'll also count how many bytes I've already received
+                    let received = 0;
+                    // then I'm looping, and I'm continuously reading from the reader.
+                    while (true) {
+                        // I get two values back. Value is the actual chunk, and done is whether I'm at the end or not.
+                        const { done, value } = await reader.read();
+                        // So if I get the value back
+                        if (value) {
+                        // I push that into that chunks array
+                        chunks.push(value);
+                        // and I add the length of the data to my received variable, and this allows me to calculate the progress.
+                        received += value.length;
+                        // So its basically received divided by total, and then I just make it look nice as a percentage value.  And the showProgress function here is something I added, so that that value then appears at the right place in the UI
+                        showProgress(total === 0 ? 'N/A' : Match.ceil(100*received/total) + '%');
+                    }
+                    // Once we are done, we leave the while loop
+                    if (done) break;               
+                }
+                // Then I remove the progress bar or the progress value. And displaying in the UI, that's also a function I have already implemented
+                removeProgress(event.id);
+
+                // And then I take the chunks. I decode them because they are essentially byte arrays, 
+                var img = decodeChunk(chunks);
+                // and then I can show the image
+                showImage(img, event.id);
             });
 
         function abort() {
