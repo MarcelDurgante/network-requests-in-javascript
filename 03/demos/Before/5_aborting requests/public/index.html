@@ -111,10 +111,10 @@
             })
             .then(events => {
                 showEvents(events);
-                events.forEach(event => {
+                events.forEach( async event => {
                     let controller = new AbortController();
                     controllers.push(controller);
-                    fetch(`api/cover/${event.id}`, {
+                    const response = await fetch(`api/cover/${event.id}`, {
                         signal: controller.signal,
                     })
                         .then(response => response.text())
