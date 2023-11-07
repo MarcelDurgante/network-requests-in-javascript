@@ -94,9 +94,28 @@
             - And there's a third option that's often forgotten. It's that the data we get back could be malformed. So we could expect JSON, but we see something that is not valid JSON. So the conversion throws an error. Of course, that means our call to response.json, for instance, needs to be put in a try catch block as well. 
         
         */
-        fetch('api/events')
-            .then(response => response.json())
+        // The API has another secret endpoint. It's api/events‑brittle because that endpoint returns an HTTP 500 response 1 out of 4 times. 
+        fetch('api/events-brittle')
+            // So things could go wrong, and therefore, we can just show those events or jsonify the response. 
+            // Instead, we just go in there. And then before we return response.json, we check the status, and if it's !==200.
+            .then(response => {
+                if (response.status !== 200) {
+                    // I've already prepared a helper function, showError, and then we can just say Something went wrong. And that just displays that information.
+                    showError('Something went wrong!')
+                }
+                return response.json();
+            })
             .then(events => showEvents(events));
+
+            /* output after re-loading the page 3 times: 
+            
+            GET http://localhost:3000/api/events-brittle 500 (Internal Server Error)                       (index):98 
+
+            Uncaught (in promise) TypeError: events.forEach is not a function                            helpers.js:3 
+                at showEvents (helpers.js:3:12)
+                at (index):108:29
+            
+            */
 
         function addToCart(id, quantity) {
             fetch('api/cart', {
