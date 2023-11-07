@@ -122,6 +122,18 @@ Basically, what I'm interested in now is if the HTTP status code is 200, which m
                     }
                 })
         };
+        /* output: 
+        
+        I'll reload the application, and then I just update a few tickets to the shopping cart, and you see that on top, the number of tickets increases whenever I click one of those buttons here. And this is how we can send HTTP POST requests to the application.
+        
+        */
+        /* Summary: 
+        
+        We send an HTTP POST request to apt/cart, send the selected event to that API endpoint. 
+        The cart is updated, and then we fetch the shopping cart. 
+        And what this updateCart function does is it basically counts how many elements are in there and then updates the UI
+        
+        */
     </script>
 </body>
 
