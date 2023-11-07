@@ -83,6 +83,17 @@
         </div>
     </div>
     <script>
+        /* Error handling: 
+        
+        Let's see three different error scenarios that could occur. 
+        
+            - The first is that fetch is throwing an error. So, running the fetch call generates an exception. And I think we all know what should be done here. We put the fetch call in a try catch block, and then we can properly handle the error, and then, for instance, display an error message. 
+            
+            - However, it could also be that the call itself works, but there is an error on the server, so a client error or a server error of 404 or an HTTP 500. And all of those error HTTP status codes will not lead to a client‑side exception because the call was made, and the call was properly answered. It wasn't answered with data. It was answered with an error information, but still there was a response to the HTTP request, and that's why we have to look at the status code and then handle the error because fetch won't throw any. 
+            
+            - And there's a third option that's often forgotten. It's that the data we get back could be malformed. So we could expect JSON, but we see something that is not valid JSON. So the conversion throws an error. Of course, that means our call to response.json, for instance, needs to be put in a try catch block as well. 
+        
+        */
         fetch('api/events')
             .then(response => response.json())
             .then(events => showEvents(events));
