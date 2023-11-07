@@ -77,6 +77,29 @@
         </div>
     </div>
     <script>
+        /* Aborting requests: 
+        
+        When a request is long‑running, we may wish to abort it. The Fetch API does support that. There are just two additional objects we need to know because then we can implement this feature. 
+        
+            - First of all, we need a so‑called AbortController. That's the object that essentially takes care about aborting a request, but that's not enough. 
+            - We also need something called a signal. Signal is a property of the AbortController, and that signal then will be used to communicate with the fetch call. 
+        
+        So we have the AbortController, we have the fetch call, and we have the signal basically standing in between as a means of communication. And what we then do is pretty straightforward. 
+        
+        We do our fetch call with the URL, and we also might have some properties like the HTTP method, HTTP headers, payload, etc. And we also provide the signal. 
+        
+        So, signal on the left is the key, signal on the right is the variable we just created. 
+        
+        Then the fetch call is running. And if it runs too long, we have the signal assigned to the request, which basically binds the controller to the request. 
+        
+        And then at any time, we can call the abort method of the controller. And thanks to the signal being tied to the controller and the signal also being tied to the fetch call, this essentially aborts the request. 
+
+        const controller = new AbortController();              <- Object for aborting the request
+        const signal = controller.signal;                      <- Object for communicating with the requests
+        fetch(url, { signal: signal });                        <- Assign signal (and controller) to the request
+        controller.abort();                                    <- Abort request
+        
+        */
         fetch('api/events-brittle')
             .then(response => {
                 if (response.status !== 200) {
