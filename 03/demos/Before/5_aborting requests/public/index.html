@@ -83,6 +83,16 @@
         </div>
     </div>
     <script>
+        /* Download Progresss - tracking chunks of readable streams: 
+        
+         Tracking the progress of the HTTP request or more precisely the response. And you do that by using something called ReadableStream. And sending requests to the server, you get a stream of data back. 
+         Let's just imagine that it's rather large data like the images from before. So, those are sent in chunks. And basically, you get when you read the data chunk and then another chunk as long as there's still data left. 
+         
+         And in the end, you've read everything. And whenever you receive a chunk, you can then, for instance, update the UI and say out of those eight chunks, I have received three. And for instance, I have a progress bar. 
+         
+         Now we have already artificially made our image loading slower than it needed to be, and so we can add some progress information to that with just a few lines of code.
+        
+        */
         let controllers = [];
         fetch('api/events')
             .then(response => {
