@@ -112,6 +112,15 @@ Basically, what I'm interested in now is if the HTTP status code is 200, which m
                 },
                 body: JSON.stringify({id: id, quantity: quantity})
             })
+            .then(response => {
+                if(response.status === 200) {
+                    // We have an API endpoint, api/cart, but this I'm using GET. And then when we get the data from it, we converted JSON into a JavaScript structure, and now we have the shopping cart basically as a structure
+                    fetch('api/cart')
+                    .then(response => response.json())
+                    // Of course, interaction with the HTML, and the markup, and the DOM is not something that is the focus of this course, so I've already prepared a helper function that can then update the cart as it is displayed. So I just call updateCart and submit the cart as an argument.
+                    .then(cart => updateCart(cart));
+                }
+            })
         };
     </script>
 </body>
