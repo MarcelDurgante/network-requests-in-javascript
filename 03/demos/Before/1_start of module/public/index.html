@@ -116,6 +116,17 @@
                 at (index):108:29
             
             */
+           /* summary: 
+           
+            I open up the Network tab. I reload the page. We see we get results. I reload the page again, a third time, and now Something went wrong. 
+            
+            And why? Because the call to events‑brittle this time got an error back, and we see that the response status code was 500. 
+            
+            And that's how you can basically catch those errors on the server. 
+            
+            And it was important for me to show you that these HTTP status codes, although they clearly indicate an error do not throw clients an exception, so we have to take care of that ourselves.
+           
+           */
 
         function addToCart(id, quantity) {
             fetch('api/cart', {
