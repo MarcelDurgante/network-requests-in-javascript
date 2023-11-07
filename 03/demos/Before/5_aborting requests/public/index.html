@@ -116,7 +116,8 @@
                     })
                     // So I have a reader, and I get this by accessing the response, then its body, so the actual data being sent as part of the HTTP response, and then I can do getReader(). That doesn't give me the full body, but a reader object that allows me to read chunk by chunk. 
                     const reader = response.body.getReader(); 
-                  
+                    // Now, when I'm requesting a resource on a server, the server can send me, as a piece of information, the length of the data being sent. That's what also enables the progress bar when downloading something in your browser, and that's put in the content length HTTP header. So, we do total, so the total amount of bytes being spected, as the value in the response headers, and the header name is Content‑Length. And if we don't have that, we just assume it's 0. 
+                    const total = response.headers.get('Content-Length')
                 });
             });
 
