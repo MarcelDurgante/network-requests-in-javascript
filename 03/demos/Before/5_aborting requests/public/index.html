@@ -122,24 +122,49 @@
             .then(events => {
                 showEvents(events); // 3. we got the events, which we are showing
                 events.forEach(event => { // iterate over the events because for each event, I'll need to make sure that an image appears
-                    fetch(`api/cover/${event.id}`) //  extra endpoint, api/cover/, and then I just provide the ID of the event, and that returns basically the image
+                    let controller = new AbortController(); // a.  new AbortController
+                    controllers.push(controller); // b.  then storing that controller so that I can access its abort method late.  I have the controllers array, and I just push the controller in there
+                    fetch(`api/cover/${event.id}`, { // c. extra endpoint, api/cover/, and then I just provide the ID of the event, and that returns basically the image
+                        signal: controller.signal, // d. when doing the fetch call, I'm providing an option. I said signal to the signal property of the controller so that I can later abort it.
+                    })
                         .then(response => response.text()) // response back, and I handled this text this time because it could be binary data since its images
                         .then(img => showImage(img, event.id)) // get an image, and then I have a helper function, showImage, which basically shows an image for an event.id
                         .catch((execption) => console.log(execption)) // if something goes wrong, I could still log the exception
                 });
             });
 
-            /* output 1: 
-            
-            All right, so far, so good, I've already created that controllers array as well, but we are not aborting yet. Let me show you in the application. 
-            
-            I reload, and then you see that one image appears. And well, it takes some time, but eventually they are there. 
-            
-            I could go to the browser DevTools, and then I can activate throttling so that it's even a little bit slower. So, how about we use maybe Good 3G, or let's use Regular 4G/LTE, then it takes even a little bit longer.
-            
-            And I'd like to use that and use that opportunity to be able to eventually abort that loading of those images here because it just takes too long, and I can implement that in our code.
-            
-            */
+        // e. And then, for the sake of simplicity, I'm just adding a function code, abort. And what this does is it iterates over all controllers. And for each controller, it tries to call the abort method.
+        // f.  So each fetch request to a cover or image now has a signal of an AbortController. And if I run the abort function, all of those requests stop because the AbortController makes them do so. 
+        function abort() {
+            controllers.forEach(controller => controller.abort());
+        }
+
+        /* g. output 2: 
+        
+        Let's reload the page. And as you see, it takes a while, so maybe let's wait until one of those images is fully loaded, and then I hit abort (in the console we type:  abort(); ). 
+        And you see now that four operations were aborted. 
+        One of the images is here, and the other four, they are not there yet, and they won't appear. 
+        The one top image you saw at the beginning, that was the static template that always appears before we do the API call. 
+        So only one of those images was successfully loaded, the one for the memory allocation concept, and I've aborted all of the other four.
+
+        abort();
+        3 DOMException: The user aborted a request.                  (index):132
+        undefined  
+        
+        */
+
+        /* output 1: 
+        
+        All right, so far, so good, I've already created that controllers array as well, but we are not aborting yet. Let me show you in the application. 
+        
+        I reload, and then you see that one image appears. And well, it takes some time, but eventually they are there. 
+        
+        I could go to the browser DevTools, and then I can activate throttling so that it's even a little bit slower. So, how about we use maybe Good 3G, or let's use Regular 4G/LTE, then it takes even a little bit longer.
+        
+        And I'd like to use that and use that opportunity to be able to eventually abort that loading of those images here because it just takes too long, and I can implement that in our code.
+        
+        Here's what I need to do. First of all, I need a new AbortController, so that controller and then new AbortController. 
+        */
 
         function addToCart(id, quantity) {
             fetch('api/cart', {
