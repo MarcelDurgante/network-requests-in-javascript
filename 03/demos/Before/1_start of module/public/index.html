@@ -87,23 +87,6 @@
             .then(response => response.json())
             .then(events => showEvents(events));
 
-        /* Click 'Add to Cart' button not working: 
-        
-        output in the console:
-
-        Uncaught ReferenceError: addToCart is not defined           (index):88 
-            at HTMLButtonElement.onclick ((index):88:2)
-        
-        */
-        /* solution:
-
-This function just sents the data to the shopping cart.  
-
-However we'd like to update our UI we need to know what is the shopping cart, how many elements are there. So that's why we could do the following. 
-Once that request has been sent, we get a response, and then we have a look at that response. And here's a new piece of information. We can have a look at the HTTP status code. 
-
-Basically, what I'm interested in now is if the HTTP status code is 200, which means HTTP OK, so supposedly, the request worked, then we can fetch the contents of the shopping cart and then update it appropriately.  
-*/
         function addToCart(id, quantity) {
             fetch('api/cart', {
                 method: 'POST',
@@ -114,26 +97,12 @@ Basically, what I'm interested in now is if the HTTP status code is 200, which m
             })
                 .then(response => {
                     if (response.status === 200) {
-                        // We have an API endpoint, api/cart, but this I'm using GET. And then when we get the data from it, we converted JSON into a JavaScript structure, and now we have the shopping cart basically as a structure
                         fetch('api/cart')
                             .then(response => response.json())
-                            // Of course, interaction with the HTML, and the markup, and the DOM is not something that is the focus of this course, so I've already prepared a helper function that can then update the cart as it is displayed. So I just call updateCart and submit the cart as an argument.
                             .then(cart => updateCart(cart));
                     }
                 })
         };
-        /* output: 
-        
-        I'll reload the application, and then I just update a few tickets to the shopping cart, and you see that on top, the number of tickets increases whenever I click one of those buttons here. And this is how we can send HTTP POST requests to the application.
-        
-        */
-        /* Summary: 
-        
-        We send an HTTP POST request to apt/cart, send the selected event to that API endpoint. 
-        The cart is updated, and then we fetch the shopping cart. 
-        And what this updateCart function does is it basically counts how many elements are in there and then updates the UI
-        
-        */
     </script>
 </body>
 
