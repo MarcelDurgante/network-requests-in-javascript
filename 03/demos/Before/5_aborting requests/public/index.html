@@ -91,6 +91,14 @@
          And in the end, you've read everything. And whenever you receive a chunk, you can then, for instance, update the UI and say out of those eight chunks, I have received three. And for instance, I have a progress bar. 
          
          Now we have already artificially made our image loading slower than it needed to be, and so we can add some progress information to that with just a few lines of code.
+
+         To make this work, there are a few changes, which I'd like to introduce. 
+         
+         First of all, I make the forEach here or the function async. And then I will once again create the AbortController, push that into the controllers array, but then it changed the call to api/cover/id a little bit.
+         
+         So I directly wait for the response, so const response = await fetch, and then I do the fetch request. And that's what I need the async for because I'm now using await here. 
+         
+         Now I got the response. And once I have the response, I create this readable stream. I need a reader.
         
         */
         let controllers = [];
