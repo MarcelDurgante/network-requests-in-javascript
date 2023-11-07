@@ -81,7 +81,14 @@
             .then(response => response.json())
             .then(events => showEvents(events));
 
+        /* Click 'Add to Cart' button not working: 
         
+        output in the console:
+
+        Uncaught ReferenceError: addToCart is not defined           (index):88 
+            at HTMLButtonElement.onclick ((index):88:2)
+        
+        */
     </script>
   </body>
 </html>
