@@ -77,14 +77,9 @@
         </div>
     </div>
     <script>
-        fetch('api/events', {
-            method: 'GET',
-            headers: {
-                Accept: 'text/xml'
-            }
-        })
-        .then(response => response.text())
-        .then(events => console.log(events));
+        fetch('api/events')
+        .then(response => response.json())
+        .then(events => showEvents(events));
     </script>
   </body>
 </html>
