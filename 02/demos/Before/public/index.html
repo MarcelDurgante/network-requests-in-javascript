@@ -85,6 +85,16 @@
         })
         .then(response => response.text())
         .then(events => console.log(events));
+        /* output: 
+        
+        console:
+        [{"id":1,"artist":"Container Enthusiasm","name":"Talk Docker to Me Tour","date":"2025-10-01T19:00:00","price":49.99,"imgUrl":"logos/Container-Enthusiasm-TalkDocker-To-Me.png"},{"id":2,"artist":"Digital Cowboys","name":"Binary Bovine Tour","date":"2025-11-01T19:30:00","price":59.99,"imgUrl":"logos/DigitalCowboys_BinaryBovine.png"},{"id":3,"artist":"Git Outta My Hub","name":"Code Empire Tour","date":"2025-12-01T20:00:00","price":39.99,"imgUrl":"logos/GitOuttaMyHub-CodeEmpire.png"},{"id":4,"artist":"Memory Allocation","name":"The Cache Tour","date":"2026-01-15T20:30:00","price":29.99,"imgUrl":"logos/Memory-Allocation-The-Cache.png"},{"id":5,"artist":"Network Firewall Squad","name":"For Those About to Block Tour","date":"2026-03-08T20:45:00","price":69.99,"imgUrl":"logos/Network-Firewall-Squad---For-Those-About-to-Block,-We-Salute-You.png"}]
+
+        Network tab/Headers subtab/Request Headers:
+
+        Accept: text/xml
+        
+        */
     </script>
   </body>
 </html>
