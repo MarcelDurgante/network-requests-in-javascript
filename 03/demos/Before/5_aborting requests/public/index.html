@@ -83,36 +83,8 @@
         </div>
     </div>
     <script>
-        /* Aborting requests: 
-        
-        When a request is long‑running, we may wish to abort it. The Fetch API does support that. There are just two additional objects we need to know because then we can implement this feature. 
-        
-            - First of all, we need a so‑called AbortController. That's the object that essentially takes care about aborting a request, but that's not enough. 
-            - We also need something called a signal. Signal is a property of the AbortController, and that signal then will be used to communicate with the fetch call. 
-        
-        So we have the AbortController, we have the fetch call, and we have the signal basically standing in between as a means of communication. And what we then do is pretty straightforward. 
-        
-        We do our fetch call with the URL, and we also might have some properties like the HTTP method, HTTP headers, payload, etc. And we also provide the signal. 
-        
-        So, signal on the left is the key, signal on the right is the variable we just created. 
-        
-        Then the fetch call is running. And if it runs too long, we have the signal assigned to the request, which basically binds the controller to the request. 
-        
-        And then at any time, we can call the abort method of the controller. And thanks to the signal being tied to the controller and the signal also being tied to the fetch call, this essentially aborts the request. 
-
-        const controller = new AbortController();              <- Object for aborting the request
-        const signal = controller.signal;                      <- Object for communicating with the requests
-        fetch(url, { signal: signal });                        <- Assign signal (and controller) to the request
-        controller.abort();                                    <- Abort request
-        
-
-        Let's implement that in our application. I have changed the application a little bit in order to be able to demonstrate that feature and to put it to good use. As you can see here, the covers or the images for the events, they are gone. So far, to be honest, I've been cheating. Those covers, they did not come from the API. They were static assets of the web application. I've changed this, and now we can put the AbortController to good use. Let's update the code. First of all, we need to make sure that we're using the stable events endpoints so that we don't get that many errors. And now I'd like to implement a little bit once we get events from the API. 
-
-        First of all, I create a variable, controllers, where I store all the AbortControllers because I'm now loading a couple of images, and there will be an AbortController for each of those so they can abort all of these requests because maybe they take some time. I got the events, which I'm showing, and then I iterate over the events because for each event, I'll need to make sure that an image appears. How do I do that? Well, I have an extra endpoint, api/cover/, and then I just provide the ID of the event, and that returns basically the image. So far, so good. And then I get some response back, and I handled this text this time because it could be binary data since its images, but I'm actually encoding them. And then I get an image, and then I have a helper function, showImage, which basically shows an image for an event.id. And if something goes wrong, I could still log the exception
-        */
-
-        let controllers = []; // 1. create a variable, controllers, where I store all the AbortControllers
-        fetch('api/events') // 2. using the stable events endpoints
+        let controllers = [];
+        fetch('api/events')
             .then(response => {
                 if (response.status !== 200) {
                     showError('Something went wrong.');
@@ -120,51 +92,22 @@
                 return response.json();
             })
             .then(events => {
-                showEvents(events); // 3. we got the events, which we are showing
-                events.forEach(event => { // iterate over the events because for each event, I'll need to make sure that an image appears
-                    let controller = new AbortController(); // a.  new AbortController
-                    controllers.push(controller); // b.  then storing that controller so that I can access its abort method late.  I have the controllers array, and I just push the controller in there
-                    fetch(`api/cover/${event.id}`, { // c. extra endpoint, api/cover/, and then I just provide the ID of the event, and that returns basically the image
-                        signal: controller.signal, // d. when doing the fetch call, I'm providing an option. I said signal to the signal property of the controller so that I can later abort it.
+                showEvents(events);
+                events.forEach(event => {
+                    let controller = new AbortController();
+                    controllers.push(controller);
+                    fetch(`api/cover/${event.id}`, {
+                        signal: controller.signal,
                     })
-                        .then(response => response.text()) // response back, and I handled this text this time because it could be binary data since its images
-                        .then(img => showImage(img, event.id)) // get an image, and then I have a helper function, showImage, which basically shows an image for an event.id
-                        .catch((execption) => console.log(execption)) // if something goes wrong, I could still log the exception
+                        .then(response => response.text())
+                        .then(img => showImage(img, event.id))
+                        .catch((execption) => console.log(execption))
                 });
             });
 
-        // e. And then, for the sake of simplicity, I'm just adding a function code, abort. And what this does is it iterates over all controllers. And for each controller, it tries to call the abort method.
-        // f.  So each fetch request to a cover or image now has a signal of an AbortController. And if I run the abort function, all of those requests stop because the AbortController makes them do so. 
         function abort() {
             controllers.forEach(controller => controller.abort());
         }
-
-        /* g. output 2: 
-        
-        Let's reload the page. And as you see, it takes a while, so maybe let's wait until one of those images is fully loaded, and then I hit abort (in the console we type:  abort(); ). 
-        And you see now that four operations were aborted. 
-        One of the images is here, and the other four, they are not there yet, and they won't appear. 
-        The one top image you saw at the beginning, that was the static template that always appears before we do the API call. 
-        So only one of those images was successfully loaded, the one for the memory allocation concept, and I've aborted all of the other four.
-
-        abort();
-        3 DOMException: The user aborted a request.                  (index):132
-        undefined  
-        
-        */
-
-        /* output 1: 
-        
-        All right, so far, so good, I've already created that controllers array as well, but we are not aborting yet. Let me show you in the application. 
-        
-        I reload, and then you see that one image appears. And well, it takes some time, but eventually they are there. 
-        
-        I could go to the browser DevTools, and then I can activate throttling so that it's even a little bit slower. So, how about we use maybe Good 3G, or let's use Regular 4G/LTE, then it takes even a little bit longer.
-        
-        And I'd like to use that and use that opportunity to be able to eventually abort that loading of those images here because it just takes too long, and I can implement that in our code.
-        
-        Here's what I need to do. First of all, I need a new AbortController, so that controller and then new AbortController. 
-        */
 
         function addToCart(id, quantity) {
             fetch('api/cart', {
