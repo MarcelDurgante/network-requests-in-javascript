@@ -93,13 +93,7 @@
          Now we have already artificially made our image loading slower than it needed to be, and so we can add some progress information to that with just a few lines of code.
 
          To make this work, there are a few changes, which I'd like to introduce. 
-         
-         First of all, I make the forEach here or the function async. And then I will once again create the AbortController, push that into the controllers array, but then it changed the call to api/cover/id a little bit.
-         
-         So I directly wait for the response, so const response = await fetch, and then I do the fetch request. And that's what I need the async for because I'm now using await here. 
-         
-         Now I got the response. And once I have the response, I create this readable stream. I need a reader.
-        
+                
         */
         let controllers = [];
         fetch('api/events')
@@ -111,15 +105,18 @@
             })
             .then(events => {
                 showEvents(events);
+                //First of all, I make the forEach here or the function async. And then I will once again create the AbortController, push that into the controllers array, but then it changed the call to api/cover/id a little bit.
                 events.forEach( async event => {
                     let controller = new AbortController();
                     controllers.push(controller);
+                    // So I directly wait for the response, so const response = await fetch, and then I do the fetch request. And that's what I need the async for because I'm now using await here. 
+                    // Now I got the response. And once I have the response, I create this readable stream. I need a reader.
                     const response = await fetch(`api/cover/${event.id}`, {
                         signal: controller.signal,
                     })
-                        .then(response => response.text())
-                        .then(img => showImage(img, event.id))
-                        .catch((execption) => console.log(execption))
+                    // So I have a reader, and I get this by accessing the response, then its body, so the actual data being sent as part of the HTTP response, and then I can do getReader(). That doesn't give me the full body, but a reader object that allows me to read chunk by chunk. 
+                    const reader = response.body.getReader(); 
+                  
                 });
             });
 
