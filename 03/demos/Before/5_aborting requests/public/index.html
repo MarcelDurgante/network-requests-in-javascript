@@ -106,16 +106,16 @@
             .then(events => {
                 showEvents(events);
                 //First of all, I make the forEach here or the function async. And then I will once again create the AbortController, push that into the controllers array, but then it changed the call to api/cover/id a little bit.
-                events.forEach( async event => {
+                events.forEach(async event => {
                     let controller = new AbortController();
                     controllers.push(controller);
                     // So I directly wait for the response, so const response = await fetch, and then I do the fetch request. And that's what I need the async for because I'm now using await here. 
                     // Now I got the response. And once I have the response, I create this readable stream. I need a reader.
                     const response = await fetch(`api/cover/${event.id}`, {
                         signal: controller.signal,
-                    })
+                    });
                     // So I have a reader, and I get this by accessing the response, then its body, so the actual data being sent as part of the HTTP response, and then I can do getReader(). That doesn't give me the full body, but a reader object that allows me to read chunk by chunk. 
-                    const reader = response.body.getReader(); 
+                    const reader = response.body.getReader();
                     // Now, when I'm requesting a resource on a server, the server can send me, as a piece of information, the length of the data being sent. That's what also enables the progress bar when downloading something in your browser, and that's put in the content length HTTP header. So, we do total, so the total amount of bytes being spected, as the value in the response headers, and the header name is Content‑Length. And if we don't have that, we just assume it's 0. 
                     const total = response.headers.get('Content-Length') || 0;
                     // So I work with chunks, so I define an array for that
@@ -128,23 +128,30 @@
                         const { done, value } = await reader.read();
                         // So if I get the value back
                         if (value) {
-                        // I push that into that chunks array
-                        chunks.push(value);
-                        // and I add the length of the data to my received variable, and this allows me to calculate the progress.
-                        received += value.length;
-                        // So its basically received divided by total, and then I just make it look nice as a percentage value.  And the showProgress function here is something I added, so that that value then appears at the right place in the UI
-                        showProgress(total === 0 ? 'N/A' : Match.ceil(100*received/total) + '%');
+                            // I push that into that chunks array
+                            chunks.push(value);
+                            // and I add the length of the data to my received variable, and this allows me to calculate the progress.
+                            received += value.length;
+                            // So its basically received divided by total, and then I just make it look nice as a percentage value.  And the showProgress function here is something I added, so that that value then appears at the right place in the UI
+                            showProgress(total === 0 ? 'N/A' : Math.ceil(100 * received / total) + '%', event.id);
+                        }
+                        // Once we are done, we leave the while loop
+                        if (done) break;
                     }
-                    // Once we are done, we leave the while loop
-                    if (done) break;               
-                }
-                // Then I remove the progress bar or the progress value. And displaying in the UI, that's also a function I have already implemented
-                removeProgress(event.id);
+                    // Then I remove the progress bar or the progress value. And displaying in the UI, that's also a function I have already implemented
+                    removeProgress(event.id);
 
-                // And then I take the chunks. I decode them because they are essentially byte arrays, 
-                var img = decodeChunk(chunks);
-                // and then I can show the image
-                showImage(img, event.id);
+                    // And then I take the chunks. I decode them because they are essentially byte arrays, 
+                    var img = decodeChunks(chunks);
+                    // and then I can show the image
+                    showImage(img, event.id);
+                });
+                /* output and summary: 
+                
+                I calculate how much data I expect. I download the data chunk by chunk. And whenever I get a new chunk, I calc the progress and display it in the UI. I make sure that there is at least some throttling. I reload the page. And then once it starts loading those images, we do see that there is progress being displayed. 
+                
+                And that's how you can track and display the progress of loading data when doing a call with the Fetch API. 
+                */
             });
 
         function abort() {
