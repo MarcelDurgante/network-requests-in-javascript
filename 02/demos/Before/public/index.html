@@ -79,7 +79,7 @@
     <script>
         fetch('api/events')
         .then(response => response.json())
-        .then(events => console.log(events));
+        .then(events => showEvents(events));
         // In the DevTools in the Network tab we can see events call, and selecting 'Headers' we can confirm the Request URL: http://localhost:3000/api/events 
         /* output: 
         
