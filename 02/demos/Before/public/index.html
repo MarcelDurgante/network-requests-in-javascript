@@ -80,19 +80,6 @@
         fetch('api/events')
         .then(response => response.json())
         .then(events => showEvents(events));
-        // In the DevTools in the Network tab we can see events call, and selecting 'Headers' we can confirm the Request URL: http://localhost:3000/api/events 
-        /* output: 
-        
-        (5) [{…}, {…}, {…}, {…}, {…}]
-        0: {id: 1, artist: 'Container Enthusiasm', name: 'Talk Docker to Me Tour', date: '2025-10-01T19:00:00', price: 49.99, …}
-        1: {id: 2, artist: 'Digital Cowboys', name: 'Binary Bovine Tour', date: '2025-11-01T19:30:00', price: 59.99, …}
-        2: {id: 3, artist: 'Git Outta My Hub', name: 'Code Empire Tour', date: '2025-12-01T20:00:00', price: 39.99, …}
-        3: {id: 4, artist: 'Memory Allocation', name: 'The Cache Tour', date: '2026-01-15T20:30:00', price: 29.99, …}
-        4: {id: 5, artist: 'Network Firewall Squad', name: 'For Those About to Block Tour', date: '2026-03-08T20:45:00', price: 69.99, …}
-        length: 5
-        [[Prototype]]: Array(0)
-        
-        */
     </script>
   </body>
 </html>
