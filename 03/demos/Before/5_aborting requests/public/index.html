@@ -83,60 +83,6 @@
         </div>
     </div>
     <script>
-        /* output: 
-        
-        CORS or "cross-origin resource sharing" is a security feature of JavaScript. CORS is important to understand because it can have implications for your code. Let's break it down:
-
-            - When a client application on a website like app.example.com sends a request to an API on a different website, it's considered a cross-origin request because the origins (protocol, domain, and port) are different.
-
-            - By default, JavaScript cannot access the response from a cross-origin request. This is a security measure to protect against potential attacks.
-
-            - CORS can sometimes be cumbersome (complicated/annoying) when working with APIs on different origins, but it serves an important purpose in protecting web applications.
-
-            - However, there are cases where you may need to access the response from a cross-origin request. In such cases, the server (API) can allow access by sending the Access-Control-Allow-Origin header, which specifies the allowed origin (client application).
-
-            - For POST requests or other requests that change the state of the application, the browser first sends a preflighted OPTIONS request to check if the server allows the cross-origin request.
-
-            - The server can respond with the Access-Control-Allow-Origin header and other headers to indicate which methods and headers are allowed for the cross-origin request.
-
-            - Without the Access-Control-Allow-Origin header, the browser will not send the POST request. This is something that needs to be configured on the server side.
-
-            - If you encounter errors related to cross-origin requests or missing CORS headers in your browser console, it means there are configuration issues on the server/API side.
-
-            - In addition to understanding fetch, we will also explore another popular library called Axios, which simplifies sending HTTP requests from JavaScript code.
-
-            See example:
-
-                                fetch('https://api.example.com/data')
-                                .then(response => {
-                                    // Check if the response status is OK (200)
-                                    if (response.ok) {
-                                    // Check if the server allows the client application's origin
-                                    const allowedOrigin = response.headers.get('Access-Control-Allow-Origin');
-                                    const clientOrigin = 'https://app.example.com';
-
-                                    if (allowedOrigin === clientOrigin || allowedOrigin === '*') {
-                                        // If the server allows the client application's origin, parse the response data
-                                        return response.json();
-                                    } else {
-                                        // If the server does not allow the client application's origin, throw an error
-                                        throw new Error('Server does not allow cross-origin requests from this origin');
-                                    }
-                                    } else {
-                                    // If the response status is not OK, throw an error
-                                    throw new Error(`Request failed with status ${response.status}`);
-                                    }
-                                })
-                                .then(data => {
-                                    // Handle the response data here
-                                    console.log(data);
-                                })
-                                .catch(error => {
-                                    // Handle any errors that occurred during the request
-                                    console.error(error);
-                                });
-        
-        */
         let controllers = [];
         fetch('api/events')
             .then(response => {
