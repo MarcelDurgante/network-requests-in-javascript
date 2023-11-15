@@ -61,6 +61,21 @@
         </div>
     </div>
     <script>
+        /* Axios HTTP Post Request: 
+        
+- Making a POST Request with Axios: To perform a POST request using Axios, a configuration object is needed.
+- URL Configuration: In the configuration, the url key specifies the request URL.
+- Method Specification: The method key is set to 'POST' to define the request type.
+- Setting Content-Type Header: The Content-Type HTTP header is set to 'application/json' in the headers property. This informs the server about the payload format.
+- Payload Data: The payload is provided under the data key. Axios automatically encodes this data as required.
+- Example Usage - addToCart Function: An example function, addToCart, takes an item ID and quantity, sending them to a shopping cart API using Axios.
+- Configuring Axios Call: The Axios call is configured with a hash table specifying method ('POST'), endpoint (api/cart), and headers (Content-Type set to 'application/json').
+- Handling Response: Upon a successful response (status code 200), further actions, like updating the shopping cart, can be taken.
+- GET Requests for Data Retrieval: For subsequent data retrieval, a GET request can be made using either axios.get or a generic Axios call with method 'GET'.
+- Error Handling: Error handling involves checking the response status code (like HTTP 200).
+- Practical Application: Testing the implementation by refreshing a page and interacting with UI elements to verify functionality.
+        
+        */
         axios.get('api/events')
             .then(response => showEvents(response.data)) 
     </script>
