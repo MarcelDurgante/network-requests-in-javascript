@@ -62,24 +62,19 @@
     </div>
     <script>
         axios.get('api/events')
-            .then(response => response.data)
+            .then(response => showEvents(response.data)) //  If it is valid JSON, it has already been automatically decoded into a JavaScript object. So we can assume that response.data contains a list of JavaScript array of events, in our case, and directly sends it to our showEvents helper function
+
+
+
         /* 
         - Initial Setup: Ensure Axios is loaded in your application before making any requests.
-        
         - Making a GET Request: Use the `axios.get()` method with the desired URL. This method defaults to a GET request.
-        
         - Promise-Based Operation: Axios operates asynchronously, using promises. The request completes when data is received from the server.
-        
         - Automatic JSON Parsing: Axios automatically converts JSON data from the API into a JavaScript object, removing the need for manual parsing.
-        
         - Handling Plain Text Responses: If the API returns plain text, Axios provides this text directly in the response.
-        
         - Response Details: The response from Axios includes data, HTTP status code, and other pertinent details.
-        
         - Error Handling: Axios comes with built-in error handling, providing detailed information about any request errors.
-        
         - Practical Use Case: For example, in retrieving a list of events for a web application, Axios fetches data and returns a promise. Upon resolution, the `response.data` attribute contains the server's data.
-        
         - Direct Application Integration: If the server's data is in JSON format, it's already a JavaScript object in `response.data`, ready to be used in the application, like displaying a list of events.
         
         This approach simplifies HTTP requests in JavaScript, providing a more streamlined and efficient way of handling data and errors.
