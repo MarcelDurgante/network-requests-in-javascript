@@ -62,7 +62,7 @@
     </div>
     <script>
         axios.get('api/events')
-            .then(response => response)
+            .then(response => response.data)
         /* 
         - Initial Setup: Ensure Axios is loaded in your application before making any requests.
         
