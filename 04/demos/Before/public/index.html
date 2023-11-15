@@ -64,9 +64,14 @@
         axios.get('api/events')
             .then(response => showEvents(response.data)) //  If it is valid JSON, it has already been automatically decoded into a JavaScript object. So we can assume that response.data contains a list of JavaScript array of events, in our case, and directly sends it to our showEvents helper function
 
+        /* output: 
+        
+         Head to localhost port 3000. And as you can see, once again, we get the list of events courtesy of our API. We also see that we have placeholders for the images because that's something we are about to fix later when we download those also from our API.
+        
+        */
 
 
-        /* 
+        /*
         - Initial Setup: Ensure Axios is loaded in your application before making any requests.
         - Making a GET Request: Use the `axios.get()` method with the desired URL. This method defaults to a GET request.
         - Promise-Based Operation: Axios operates asynchronously, using promises. The request completes when data is received from the server.
