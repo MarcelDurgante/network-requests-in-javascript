@@ -61,53 +61,30 @@
         </div>
     </div>
     <script>
-        /* Axios HTTP Post Request: 
-        
-- Making a POST Request with Axios: To perform a POST request using Axios, a configuration object is needed.
-- URL Configuration: In the configuration, the url key specifies the request URL.
-- Method Specification: The method key is set to 'POST' to define the request type.
-- Setting Content-Type Header: The Content-Type HTTP header is set to 'application/json' in the headers property. This informs the server about the payload format.
-- Payload Data: The payload is provided under the data key. Axios automatically encodes this data as required.
-- Example Usage - addToCart Function: An example function, addToCart, takes an item ID and quantity, sending them to a shopping cart API using Axios.
-- Configuring Axios Call: The Axios call is configured with a hash table specifying method ('POST'), endpoint (api/cart), and headers (Content-Type set to 'application/json').
-- Handling Response: Upon a successful response (status code 200), further actions, like updating the shopping cart, can be taken.
-- GET Requests for Data Retrieval: For subsequent data retrieval, a GET request can be made using either axios.get or a generic Axios call with method 'GET'.
-- Error Handling: Error handling involves checking the response status code (like HTTP 200).
-- Practical Application: Testing the implementation by refreshing a page and interacting with UI elements to verify functionality.
-        
-        */
         axios.get('api/events')
             .then(response => showEvents(response.data));
-
-        function addToCart(id, quantity) { // implement our JavaScript helper function that the UI is calling. It's called addToCart. And it receives two arguments, the id of an item and the quantity. And it will put that into the shopping cart via our API. 
-            axios({ // We call the generic axios function. And as an argument, we provide a hash table that configures the call. It will use HTTP POST as a method. And as an endpoint, we are using api/cart.
-                method: 'POST', // We're using POST, and the key name is method
+        function addToCart(id, quantity) {
+            axios({
+                method: 'POST',
                 url: 'api/cart',
-                headers: { // when doing a POST request, we have to tell the server which format we are using for encoding the payload. And we do that in the Content‑Type HTTP header,  and the header we need for that task is the Content‑Type header set to application/json because we are sending JSON, and the API is expecting JSON.
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                data: { //  the payload we provided as well, the key is called data, and we can just provide a JavaScript structure, Axios automatically encodes that data appropriately. So, I am just using here in our typical example for adding items to the shopping cart, the ID of the item and the quantity, and that will then be automatically sent as part of that request.  It could be provided by us in JSON string format, but Axios is doing that for us. So, we can just use the object literal syntax here and just say, okay, we are providing an id and a quantity, and that's it. 
+                data: {
                     id: id,
                     quantity: quantity
                 }
             })
-            // Axios call returns a promise. 
-            .then(response => { // And when that resolves, we get a response, and then we can process that response
-                if(response.status === 200) { // let's check the status code the server returned, and if that's 200, then supposedly everything went okay
-                    axios({ // we can now do the call to the cart endpoint via GET again. We could use axios.get as before, or once again, a generic axios call. I'll do that so that you see both options here. The method is GET, which would be the default. The URL is once again api/cart. We don't need any extra headers here or any payload.
-                        method: 'GET',
-                        url: 'api/cart'
-                    })
-                    .then(response => updateCart(response.data)) // And once we get data back, then we can just update our shopping cart and use the data in the response.
-                }
-            })
+                .then(response => {
+                    if (response.status === 200) {
+                        axios({
+                            method: 'GET',
+                            url: 'api/cart'
+                        })
+                            .then(response => updateCart(response.data))
+                    }
+                })
         }
-
-        /* Result: 
-        
-         I'm refreshing the page so that we get the latest version we've just worked on. And then if I hit a few of those buttons, you see each and every time I do that the number on top increases. So the shopping cart functionality works again, and this time we are talking to our API through Axios.
-        
-        */
     </script>
 </body>
 
