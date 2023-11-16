@@ -72,6 +72,17 @@
                     showError('Something went wrong')
                 }
             })
+            /* output: 
+            
+            I reload our application. It works. I reload it again. It works third time, and fourth time should be an error. Indeed, it is. So yeah, Something went wrong. And it's shown in the UI
+            
+            console: 
+            
+                GET http://localhost:3000/api/events-brittle 500 (Internal Server Error)               xhr.js:251 
+
+            That's the verbatim data that came from the server. And of course, you could put something more useful up there. But this is how you can do error handling when using Axios for doing HTTP requests.
+            
+            */
 
         function addToCart(id, quantity) {
             axios({
