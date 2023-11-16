@@ -61,6 +61,7 @@
         </div>
     </div>
     <script>
+        //  add the download progress tracking feature to our Globoticket application
         axios.get('api/events-brittle')
             .then(response => showEvents(response.data))
             .catch(error => {
