@@ -61,28 +61,15 @@
         </div>
     </div>
     <script>
-        // calling the events‑brittle API endpoint, which returns HTTP 500 one out of four times.
         axios.get('api/events-brittle')
             .then(response => showEvents(response.data))
-            // with .catch let's look at those errors, and there are different possibilities now. For instance, we could look at 'error.response' because that gives us the response object, the HTTP response object, which means the server did return something, but not something we wanted, for instance, an HTTP status code outside the 2XX interval. Otherwise, we could look at error.requests, so we get the requests, etc, so we can have a quite fine‑grained error handling here, but let's stick with errors in the HTTP response for now. 
             .catch(error => {
-                if (error.response) { //So if we get that, we could do something like this. We have the showError helper function, which shows any error message in our UI, so we can just have a look at error.response.data. Our API though is JSON‑based. So, it returns an error in JSON format as well, so we won't receive a string. We'll get a JavaScript structure. So maybe we should convert it into a string, so how about JSON.stringify that structure so that we have at least something to output? 
+                if (error.response) {
                     showError(JSON.stringify(error.response.data));
-                } else { // And if we don't have a server response, we just show a generic error, so Something went wrong. Not a very detailed error message, but at least an error message.
+                } else {
                     showError('Something went wrong')
                 }
             })
-            /* output: 
-            
-            I reload our application. It works. I reload it again. It works third time, and fourth time should be an error. Indeed, it is. So yeah, Something went wrong. And it's shown in the UI
-            
-            console: 
-            
-                GET http://localhost:3000/api/events-brittle 500 (Internal Server Error)               xhr.js:251 
-
-            That's the verbatim data that came from the server. And of course, you could put something more useful up there. But this is how you can do error handling when using Axios for doing HTTP requests.
-            
-            */
 
         function addToCart(id, quantity) {
             axios({
