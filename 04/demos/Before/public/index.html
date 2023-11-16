@@ -77,7 +77,21 @@
         
         */
         axios.get('api/events')
-            .then(response => showEvents(response.data)) 
+            .then(response => showEvents(response.data));
+
+        function addToCart(id, quantity) { // implement our JavaScript helper function that the UI is calling. It's called addToCart. And it receives two arguments, the id of an item and the quantity. And it will put that into the shopping cart via our API. 
+            axios({ // We call the generic axios function. And as an argument, we provide a hash table that configures the call. It will use HTTP POST as a method. And as an endpoint, we are using api/cart.
+                method: 'POST', // We're using POST, and the key name is method
+                url: 'api/cart',
+                headers: { // when doing a POST request, we have to tell the server which format we are using for encoding the payload. And we do that in the Content‑Type HTTP header,  and the header we need for that task is the Content‑Type header set to application/json because we are sending JSON, and the API is expecting JSON.
+                    'Content-Type': 'application/json'
+                },
+                data: { //  the payload we provided as well, the key is called data, and we can just provide a JavaScript structure, Axios automatically encodes that data appropriately. So, I am just using here in our typical example for adding items to the shopping cart, the ID of the item and the quantity, and that will then be automatically sent as part of that request.  It could be provided by us in JSON string format, but Axios is doing that for us. So, we can just use the object literal syntax here and just say, okay, we are providing an id and a quantity, and that's it. 
+                    id: id,
+                    quantity: quantity
+                }
+            });
+        }
     </script>
 </body>
 
