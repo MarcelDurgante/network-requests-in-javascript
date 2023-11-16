@@ -61,36 +61,32 @@
         </div>
     </div>
     <script>
-        //  add the download progress tracking feature to our Globoticket application
-        axios.get('api/events') //  switch back from event‑brittle to events
-        //  handle the response properly. 
-            .then(response => { // So far, were only showing the events, but we now also would like to load the associated images and then track that download. So, we are introducing a code block here. 
-                const events = response.data; // // First of all, I'm introducing the events variable, which holds the data from that API call because I need the events twice.
-                showEvents(events); // The first time I need it here for the showEvents call
-                events.forEach(event => { // and then I need to iterate over all of them. And for each event, I have to load the associated image and do the tracking
-                    axios({ // To implement, we are calling the axios function
-                        method: 'GET', //  and configure it to use HTTP GET. Yes, that's the default. But still, I would like things to be readable and explicit. So, I'll just state that here.  
-                        url: `api/cover/${event.id}`, // And the URL is api/cover and then the event.id. 
-                        // And the new feature we just talked about is an event handler for the download progress event. And that event handler can then be used to show how much data has already been transferred. 
-                        onDownloadProgress: (e) => showProgress( // We've already implemented a helper function, showProgress, which interacts with the UI, and that showProgress helper needs the value to display and where to display it. Now the value to display is something we could read out of the progress property of the event arguments. The progress property contains a value between 0 and 1 if and only if we have the total length of bytes we expect. So that's basically when the content length HTTP response header is set. If not, that value here is not available, so this could be the case. So we have to check whether there's anything useful in it. 
-                            e.progress ? Math.round(100 * e.progress) + '%' : 'N/A', // And if so, we can just do something like this, Math.round, and then we round 100 times that value and output it with a percentage sign. Otherwise, we just say not available.
-                            // We can't really say how many percent or what fraction of the data has already been transferred if you don't know the total number we expect. So that's the what, and the where is the event.id, and then our helper function basically takes care of the rest. So that is the call that retrieves the image. The progress will be updated. And once we get a result, then we have our image.
+        axios.get('api/events')
+            .then(response => {
+                const events = response.data;
+                showEvents(events);
+                events.forEach(event => {
+                    axios({
+                        method: 'GET',
+                        url: `api/cover/${event.id}`,
+                        onDownloadProgress: (e) => showProgress(
+                            e.progress ? Math.round(100 * e.progress) + ' %' : 'N/A',
                             event.id
                         )
                     })
-                        .then(response => { // So, we look at our response. 
-                            removeProgress(event.id); // We can then remove the progress information for that event.id. 
-                            showImage(response.data, event.id) // And finally, we call showImage, which then shows or adds the image to the UI for said event. All of these helper functions are functions, which I have already implemented that update the UI, which is beyond the scope of this course. So this just works out of the box because
-                        })
+                        .then(response => {
+                            removeProgress(event.id);
+                            showImage(response.data, event.id);
+                        });
                 });
             })
             .catch(error => {
                 if (error.response) {
                     showError(JSON.stringify(error.response.data));
                 } else {
-                    showError('Something went wrong')
+                    showError('Something went wrong.');
                 }
-            })
+            });
 
         function addToCart(id, quantity) {
             axios({
@@ -110,23 +106,10 @@
                             method: 'GET',
                             url: 'api/cart'
                         })
-                            .then(response => updateCart(response.data))
+                            .then(response => updateCart(response.data));
                     }
-                })
+                });
         }
-        /* output: 
-        
-        Launch the application. Make sure that there is at least some throttling so that we can witness the effect, and then we load the application, and you see there's a progress bar for one of the images. 
-        
-        And after that hit 100%, the image is there, and it's displayed, and the same thing is true for all of the other images as well. And you can actually follow the progress in the Network tab of the browser DevTools as well. 
-        
-        So at the moment, three of the images or four are there, and one is still pending, and now it's there as well. 
-        
-        At the beginning of this module, I told you that Axios works both in a node and in a browser context. 
-        
-        In the node context, the HTTP requests are done using the HTTP module. In a browser context, something called XMLHttpRequest is used under the hood, so that's what we will have a look at next.
-        
-        */
     </script>
 </body>
 
