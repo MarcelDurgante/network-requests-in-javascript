@@ -90,7 +90,17 @@
                     id: id,
                     quantity: quantity
                 }
-            });
+            })
+            // Axios call returns a promise. 
+            .then(response => { // And when that resolves, we get a response, and then we can process that response
+                if(response.status === 200) { // let's check the status code the server returned, and if that's 200, then supposedly everything went okay
+                    axios({ // we can now do the call to the cart endpoint via GET again. We could use axios.get as before, or once again, a generic axios call. I'll do that so that you see both options here. The method is GET, which would be the default. The URL is once again api/cart. We don't need any extra headers here or any payload.
+                        method: 'GET',
+                        url: 'api/cart'
+                    })
+                    .then(response => updateCart(response.data)) // And once we get data back, then we can just update our shopping cart and use the data in the response.
+                }
+            })
         }
     </script>
 </body>
