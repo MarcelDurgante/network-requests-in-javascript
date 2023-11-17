@@ -120,6 +120,11 @@
             xhrPOST.setRequestHeader('Content-Type', 'application/json'); // 5. setRequestHeader method to set the Content‑Type request header to application/json, because we are sending JSON. The API is expecting JSON as well
             xhrPOST.send(JSON.stringify({ id: id, quantity: quantity })); // 6. JSON.stringify to convert a JavaScript structure into a JSON string. And that structure just consists of an id and of a quantity, and both are parameters to that addToCart function
         }
+        /* output: 
+        
+        Let's go to the browser, load the app, add a few items to the shopping cart. And as you can see, whenever I'm clicking, the number on top is updated. So, our endpoint is still working as expected, of course, but also our client‑side implementation works exactly as we've planned it
+        
+        */
     </script>
 </body>
 
