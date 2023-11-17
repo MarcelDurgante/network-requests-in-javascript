@@ -81,10 +81,14 @@
        
        */
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'api/events', true);
+        xhr.open('GET', 'api/events-slow', true); // 1. calling the slow API and not the good one
+        xhr.timeout = 1000; // 2. set the timeout property to 1000, so 1000 ms, 1 second
         xhr.onload = () => {
             const events = JSON.parse(xhr.responseText);
             showEvents(events);
+        };
+        xhr.ontimeout = () => { // 3.  set up the ontimeout event handler to output an error message
+            showError('Request timed out!'); // 4. showError helper function passing 'Request timed out!' as argument that will be displayed as the error message
         };
         xhr.send(null);
 
@@ -103,6 +107,15 @@
             xhrPOST.setRequestHeader('Content-Type', 'application/json'); 
             xhrPOST.send(JSON.stringify({ id: id, quantity: quantity })); 
         }
+        /* output: 
+        
+        So let's go to the home page. And after a short delay, we get a list of events. Let's refresh. It takes a while, and now the request timed out. In the UI we se the error message.
+
+        Summary:
+
+        And this was possible with just a few lines of code. And this is apart from sending the actual requests, the other main feature, so to speak of XMLHttpRequest. But of course, in retrospect, working with a promise‑based API such as the Fetch API or even the API that Axios provides is probably the more convenient approach. And this concludes our coverage of sending HTTP requests to a server from JavaScript using different techniques. However, there's one more thing I'd like to talk about, and that covers high performance bidirectional communication with a server using something called WebSockets. That's up next.
+        
+        */
     </script>
 </body>
 
