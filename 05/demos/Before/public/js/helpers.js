@@ -5,7 +5,7 @@ function showEvents(events) {
             <tr class="align-middle">
                 <td>
                     <div class="img-container">
-                        <img data-event-id="${event.id}" class="img-fluid max-100" src="img/logos/placeholder.png" alt="Cover">
+                        <img data-event-id="${event.id}" class="img-fluid max-100" src="img/${event.imgUrl}" alt="Cover">
                         <div class="img-progress" data-event-id="${event.id}"></div>
                     </div>
                 </td>

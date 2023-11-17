@@ -57,6 +57,13 @@
         </div>
     </div>
     <script>
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'api/events', true);
+        xhr.onload = () => {
+            const events = JSON.parse(xhr.responseText);
+            showEvents(events);
+        };
+        xhr.send(null);
     </script>
   </body>
 </html>
