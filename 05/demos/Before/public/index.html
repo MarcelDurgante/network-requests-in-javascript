@@ -69,6 +69,17 @@
         If, however, it takes the server longer than 1 second to reply to our request, the timeout event is fired. So if we set xhr.ontimeout to a handler function, that handler function will now be called. So this is a way of doing error handling for long‑running requests.
         
         */
+       /* Implementation steps: 
+       
+       In the JavaScript code, we then set the timeout property to, say, 1000, so 1000 ms, 1 second. Remember the artificial delay in the API is between 0 and 2 seconds. So in about 50% of cases, the API is quick enough, and in the other 50% of cases, it is not. 
+       
+       So we can set up the ontimeout event handler, and there we just output an error message. 
+       
+       We have the showError helper function and then maybe Request timed out! as an appropriate message, and that's it. 
+       
+       The only thing remaining is, of course, that we are actually calling the slow API and not the good one, so events‑slow, and then we verify the behavior in the browser. 
+       
+       */
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'api/events', true);
         xhr.onload = () => {
