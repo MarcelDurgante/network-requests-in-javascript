@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <link rel="icon" href="img/favicon.ico" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/helpers.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Globoticket</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="root">
         <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
@@ -57,6 +60,43 @@
         </div>
     </div>
     <script>
+        /* XMLHttpRequest POST request: 
+        
+        We instantiate the XMLHttpRequest object, and then we use the open method. This time, we are using POST in the first argument as the HTTP method to use. The second argument again is the endpoint, the URL. The third argument is set to true by us so that we have an asynchronous request. 
+        
+        When sending a POST request and sending payload, we have to tell the server in which format that data comes. For HTML forms, for instance, we would have a specific format for form data, our API though expects JSON. But still, we have to tell the server which format we are using, which format the client is using. And we do that by setting the Content‑Type HTTP header, and we can do that with the XMLHttpRequest instance by using the setRequestHeader method. It expects two arguments, first, the header name and then the header value. So this sets the header. 
+        
+        Well, and then, of course, we set up the event handler, and we again set up the event handler before we send the request. Otherwise, maybe the endpoint is faster than our JavaScript execution, so no surprises here. 
+        
+        Well, and then we do send the request. The send method once again requires an argument, and this time we are using that argument. We are sending the data. The send method expects a string, so we have to provide a string. So here we just have a verbatim spring, but we could also use the json.stringify method to create a string out of a JSON structure. So this sends the request and also handles it when the server responds anything. 
+        
+        We have to implement the addToCart function, which receives the item's ID and its quantity from the UI when the user clicks on one of those addToCart buttons. In there, we have to do two HTTP requests. 
+        
+        The first one is a POST request to the cart endpoint so that we are adding the item to the shopping cart. And once that's done, we have to issue a GET request to the cart endpoint so that we can update the cart UI in our application. 
+        
+        We're using XMLHttpRequest for that. I could consider reusing the XMLHttpRequest instance from above. But to make the distinction a little bit clearer, I would like to set up separate ones, and that's what I'm doing right now. 
+        
+        So I create, let's say, xhrPOST for the POST request and configure that to use POST as the HTTP method, then api/cart as the endpoint, and we would like to do that in an asynchronous fashion. 
+        
+        Then, I set up the onload event handler, but we'll look at that a little bit later. Let's first finish the request. 
+        
+        Before we send data, we have to tell the server which format we are using for that data. So, I'm using the setRequestHeader method to set the Content‑Type request header to application/json because we are sending JSON. The API is expecting JSON as well. 
+        
+        And then we can, well, send which data? We have to provide a string, so we could use JSON.stringify to convert a JavaScript structure into a JSON string. And that structure just consists of an id and of a quantity, and both are parameters to that addToCart function. 
+        
+        Now once we got data back from the HTTP POST request, we can send out the GET request. So, I create xhrGET and configure that appropriately as well. So this time, we have GET as the HTTP method and then api/cart as the endpoint. And once again, asynchronously, eventually we send the request with null as an argument, as we've discussed before. 
+        
+        The only thing missing now is the onload event handler. And in that onload event handler, well, we get data back, and we have to use that data, which is a string, convert it into a JavaScript structure, and then provide that JavaScript structure to our JavaScript updateCart helper function. That's all there is, and we already know how this is going. So we get the cart.
+        
+        So how about we say const cart, and then we start with looking at xhrGET and then responseText, and we convert this into a JavaScript structure using JSON.parse. 
+        
+        As before, now it's in that cart variable, and we can call updateCart and provide the cart. 
+        
+        And basically, that's it. 
+        
+        A POST request first and then a subsequent GET request to update the UI. 
+        
+        */
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'api/events', true);
         xhr.onload = () => {
@@ -65,5 +105,6 @@
         };
         xhr.send(null);
     </script>
-  </body>
+</body>
+
 </html>
