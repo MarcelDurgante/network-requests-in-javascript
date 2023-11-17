@@ -60,35 +60,15 @@
         </div>
     </div>
     <script>
-        /* Timeouts explanation (see XMLHttpRequest - Request Timeouts support image): 
-        
-        As you have seen so far, the XMLHttpRequest API is rather limited. I mean, we can send the HTTP requests, we can read out the responses, but we don't have many extra features. Well, we can set headers. We could also actually read out response headers. But there's one feature embedded in that API, and that's a built‑in timeout mechanism. 
-        
-        So, when we have an XMLHttpRequest instance, we can set its timeout property, and here I set it to 1000. That is the number of milliseconds, so that means 1 second. What does that mean? We send the request then, and the request takes a while until the server sends it or is done sending it. If that happens before those 1000 ms have passed after sending the request, the load event is triggered. So whatever we set xhr.onload to will be called and run. 
-        
-        If, however, it takes the server longer than 1 second to reply to our request, the timeout event is fired. So if we set xhr.ontimeout to a handler function, that handler function will now be called. So this is a way of doing error handling for long‑running requests.
-        
-        */
-       /* Implementation steps: 
-       
-       In the JavaScript code, we then set the timeout property to, say, 1000, so 1000 ms, 1 second. Remember the artificial delay in the API is between 0 and 2 seconds. So in about 50% of cases, the API is quick enough, and in the other 50% of cases, it is not. 
-       
-       So we can set up the ontimeout event handler, and there we just output an error message. 
-       
-       We have the showError helper function and then maybe Request timed out! as an appropriate message, and that's it. 
-       
-       The only thing remaining is, of course, that we are actually calling the slow API and not the good one, so events‑slow, and then we verify the behavior in the browser. 
-       
-       */
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'api/events-slow', true); // 1. calling the slow API and not the good one
-        xhr.timeout = 1000; // 2. set the timeout property to 1000, so 1000 ms, 1 second
+        xhr.open('GET', 'api/events-slow', true); 
+        xhr.timeout = 1000; 
         xhr.onload = () => {
             const events = JSON.parse(xhr.responseText);
             showEvents(events);
         };
-        xhr.ontimeout = () => { // 3.  set up the ontimeout event handler to output an error message
-            showError('Request timed out!'); // 4. showError helper function passing 'Request timed out!' as argument that will be displayed as the error message
+        xhr.ontimeout = () => { 
+            showError('Request timed out!'); 
         };
         xhr.send(null);
 
@@ -107,15 +87,6 @@
             xhrPOST.setRequestHeader('Content-Type', 'application/json'); 
             xhrPOST.send(JSON.stringify({ id: id, quantity: quantity })); 
         }
-        /* output: 
-        
-        So let's go to the home page. And after a short delay, we get a list of events. Let's refresh. It takes a while, and now the request timed out. In the UI we se the error message.
-
-        Summary:
-
-        And this was possible with just a few lines of code. And this is apart from sending the actual requests, the other main feature, so to speak of XMLHttpRequest. But of course, in retrospect, working with a promise‑based API such as the Fetch API or even the API that Axios provides is probably the more convenient approach. And this concludes our coverage of sending HTTP requests to a server from JavaScript using different techniques. However, there's one more thing I'd like to talk about, and that covers high performance bidirectional communication with a server using something called WebSockets. That's up next.
-        
-        */
     </script>
 </body>
 
