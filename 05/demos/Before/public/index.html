@@ -60,6 +60,15 @@
         </div>
     </div>
     <script>
+        /* Timeouts explanation (see XMLHttpRequest - Request Timeouts support image): 
+        
+        As you have seen so far, the XMLHttpRequest API is rather limited. I mean, we can send the HTTP requests, we can read out the responses, but we don't have many extra features. Well, we can set headers. We could also actually read out response headers. But there's one feature embedded in that API, and that's a built‑in timeout mechanism. 
+        
+        So, when we have an XMLHttpRequest instance, we can set its timeout property, and here I set it to 1000. That is the number of milliseconds, so that means 1 second. What does that mean? We send the request then, and the request takes a while until the server sends it or is done sending it. If that happens before those 1000 ms have passed after sending the request, the load event is triggered. So whatever we set xhr.onload to will be called and run. 
+        
+        If, however, it takes the server longer than 1 second to reply to our request, the timeout event is fired. So if we set xhr.ontimeout to a handler function, that handler function will now be called. So this is a way of doing error handling for long‑running requests.
+        
+        */
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'api/events', true);
         xhr.onload = () => {
