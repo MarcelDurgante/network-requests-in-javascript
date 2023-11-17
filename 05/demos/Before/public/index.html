@@ -110,12 +110,12 @@
             xhrPOST.open('POST', 'api/cart', true); // 3 configure that to use POST as the HTTP method, then api/cart as the endpoint, and we would like to do that in an asynchronous fashion
             xhrPOST.onload = () => { // 4. set up the onload event handler
                 const xhrGET = new XMLHttpRequest(); // 7. Now once we got data back from the HTTP POST request, we can send out the GET request to the cart endpoint so that we can update the cart UI. So, I create xhrGET and configure that appropriately as well  GET request 
-                xhtGET.open('GET', 'api/cart', true); // 8. GET as the HTTP method and then api/cart as the endpoint. And once again, asynchronously
+                xhrGET.open('GET', 'api/cart', true); // 8. GET as the HTTP method and then api/cart as the endpoint. And once again, asynchronously
                 xhrGET.onload = () => { // 10.  onload event handler for the data (which is a string) we get back
                     const cart = JSON.parse(xhrGET.responseText); // 11. convert it into a JavaScript structure and then we start with looking at xhrGET responseText
                     updateCart(cart); // 12. and then provide that JavaScript structure to our JavaScript updateCart helper function. Now it's in that cart variable, and we can call updateCart and provide the cart
                 };
-                xhrGet.send(null); // 9. send the request with null as an argument
+                xhrGET.send(null); // 9. send the request with null as an argument
             };
             xhrPOST.setRequestHeader('Content-Type', 'application/json'); // 5. setRequestHeader method to set the Content‑Type request header to application/json, because we are sending JSON. The API is expecting JSON as well
             xhrPOST.send(JSON.stringify({ id: id, quantity: quantity })); // 6. JSON.stringify to convert a JavaScript structure into a JSON string. And that structure just consists of an id and of a quantity, and both are parameters to that addToCart function
