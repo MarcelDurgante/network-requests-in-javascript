@@ -129,6 +129,10 @@
                     var img = decodeChunks(chunks);
                     showImage(img, event.id);
                 });
+                const ws = new WebSocket('ws://localhost:3000'); // create an instance of WebSocket, and URL will be ws for WebSockets and then localhost port 3000
+                ws.onmessage = (e) => { // onmessage, and we set it to a function that receives event data or event arguments. And the data property of those contains the message from the server. The message from the server, as you've just seen, in the browser is a JSON string. So basically, we would like to parse that JSON string. And remember, we have that helper JavaScript function, updateCart, which we've used before. Now updateCart usually expects the full shopping cart, so all of the articles with their quantities. But what the server sends us is good enough for the purpose of updating the UI because the server just sends the info quantity of 42 for 42 items in total. So this is actually good enough for our purposes.
+                    updateCart(JSON.parse(e.data));
+                }
             });
 
         function abort() {
