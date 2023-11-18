@@ -1,8 +1,8 @@
 # [Network Requests in JavaScript](https://app.pluralsight.com/library/courses/javascript-network-requests/table-of-contents)
 *by [Christian Wenz](https://app.pluralsight.com/profile/author/christian-wenz)*
 
-> [Certificate]().
-> ![Certificate Image]()
+> [Certificate](https://app.pluralsight.com/achievements/share/8b3e7d8d-c9ca-41c1-8a68-4baaf070d869).
+> ![Certificate Image](https://i.ibb.co/ykSVBqW/network-requests-in-javascript-certificate-by-pluralsight.png)
 
 ## Overview:
 
