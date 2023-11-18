@@ -72,6 +72,24 @@
         In various scenarios, WebSockets provide an efficient way to transmit data from the server to the client continuously, eliminating the need for repeated polling of data through traditional HTTP requests.
         
         */
+
+        /* WebSockets JavaScript implementation key steps: 
+        
+        WebSockets are well-supported in major browsers, allowing clients to use JavaScript for WebSockets communication with supporting servers. When using npm, two primary packages, 'ws' and 'websocket,' offer both client and server libraries. In a typical JavaScript implementation, here's a summary of key steps:
+
+            Instantiating WebSocket: Start by creating an instance of the WebSocket class, specifying a URL to connect to the WebSocket endpoint. URLs typically begin with 'ws://' for WebSocket or 'wss://' for WebSocket Secure, akin to HTTP and HTTPS.
+
+            Handling Events:
+
+                Open Event: After the connection is established, the 'open' event is fired. You can set up an event handler for this event to perform actions when the connection is ready.
+                Sending Messages: You can use the 'send' method to send messages from the client to the server once the connection is established.
+                Message Event: When the server sends data to the client, the 'message' event is triggered. You can set up an event handler for this event to process incoming data.
+                Closing Connection: The connection can be closed actively from the client side or by the server, such as in the case of a server crash. You'll receive notifications when the connection is closed.
+                Error Handling: There's also an 'error' event available for handling errors that may occur during WebSocket communication.
+
+        This JavaScript API provides the foundation for bidirectional communication between clients and servers using WebSockets, making it suitable for various applications, including the Globoticket application.
+        
+        */
         let controllers = [];
 
         fetch('api/events')
