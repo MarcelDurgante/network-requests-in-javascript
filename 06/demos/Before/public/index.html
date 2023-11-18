@@ -57,6 +57,21 @@
         </div>
     </div>
     <script>
+        /* WebSockets: 
+        
+        WebSockets are a bidirectional communication protocol used for exchanging data between a client and a server. Unlike HTTP, which is request-response based and closes the connection after each exchange, WebSockets allow continuous data transmission between the two parties. Here's a summary of how WebSockets work:
+
+            Establishing Connection: The client initiates a connection with the server, typically through a web server, by sending an HTTP request using a specified port (e.g., port 80 or 443). Within this request, the client includes an "upgrade" header with "websocket" as the value, indicating its desire to use WebSockets for communication.
+
+            Handshake: After receiving the client's request, the server and client perform a handshake. During this process, the client sends a random key that is Base64 encoded. If the server is capable of accepting a WebSocket connection, it responds with an HTTP 101 status code known as "Switching Protocols." It also includes the headers "Upgrade: websocket" and "Connection: Upgrade" in its response.
+
+            Security Verification: To ensure the authenticity of the server's response, the server appends a GUID (Globally Unique Identifier) to the client's security key and calculates a SHA hash for it. This hash is returned to the client, confirming that the response came from the server.
+
+            Bidirectional Communication: Once the handshake is complete, a bidirectional communication channel is established between the client and server. They can now exchange data in real-time without the need for the client to continuously send requests.
+
+        In various scenarios, WebSockets provide an efficient way to transmit data from the server to the client continuously, eliminating the need for repeated polling of data through traditional HTTP requests.
+        
+        */
         let controllers = [];
 
         fetch('api/events')
