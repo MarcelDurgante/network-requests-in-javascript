@@ -57,39 +57,6 @@
         </div>
     </div>
     <script>
-        /* WebSockets: 
-        
-        WebSockets are a bidirectional communication protocol used for exchanging data between a client and a server. Unlike HTTP, which is request-response based and closes the connection after each exchange, WebSockets allow continuous data transmission between the two parties. Here's a summary of how WebSockets work:
-
-            Establishing Connection: The client initiates a connection with the server, typically through a web server, by sending an HTTP request using a specified port (e.g., port 80 or 443). Within this request, the client includes an "upgrade" header with "websocket" as the value, indicating its desire to use WebSockets for communication.
-
-            Handshake: After receiving the client's request, the server and client perform a handshake. During this process, the client sends a random key that is Base64 encoded. If the server is capable of accepting a WebSocket connection, it responds with an HTTP 101 status code known as "Switching Protocols." It also includes the headers "Upgrade: websocket" and "Connection: Upgrade" in its response.
-
-            Security Verification: To ensure the authenticity of the server's response, the server appends a GUID (Globally Unique Identifier) to the client's security key and calculates a SHA hash for it. This hash is returned to the client, confirming that the response came from the server.
-
-            Bidirectional Communication: Once the handshake is complete, a bidirectional communication channel is established between the client and server. They can now exchange data in real-time without the need for the client to continuously send requests.
-
-        In various scenarios, WebSockets provide an efficient way to transmit data from the server to the client continuously, eliminating the need for repeated polling of data through traditional HTTP requests.
-        
-        */
-
-        /* WebSockets JavaScript implementation key steps: 
-        
-        WebSockets are well-supported in major browsers, allowing clients to use JavaScript for WebSockets communication with supporting servers. When using npm, two primary packages, 'ws' and 'websocket,' offer both client and server libraries. In a typical JavaScript implementation, here's a summary of key steps:
-
-            Instantiating WebSocket: Start by creating an instance of the WebSocket class, specifying a URL to connect to the WebSocket endpoint. URLs typically begin with 'ws://' for WebSocket or 'wss://' for WebSocket Secure, akin to HTTP and HTTPS.
-
-            Handling Events:
-
-                Open Event: After the connection is established, the 'open' event is fired. You can set up an event handler for this event to perform actions when the connection is ready.
-                Sending Messages: You can use the 'send' method to send messages from the client to the server once the connection is established.
-                Message Event: When the server sends data to the client, the 'message' event is triggered. You can set up an event handler for this event to process incoming data.
-                Closing Connection: The connection can be closed actively from the client side or by the server, such as in the case of a server crash. You'll receive notifications when the connection is closed.
-                Error Handling: There's also an 'error' event available for handling errors that may occur during WebSocket communication.
-
-        This JavaScript API provides the foundation for bidirectional communication between clients and servers using WebSockets, making it suitable for various applications, including the Globoticket application.
-        
-        */
         let controllers = [];
 
         fetch('api/events')
@@ -129,8 +96,8 @@
                     var img = decodeChunks(chunks);
                     showImage(img, event.id);
                 });
-                const ws = new WebSocket('ws://localhost:3000'); // create an instance of WebSocket, and URL will be ws for WebSockets and then localhost port 3000
-                ws.onmessage = (e) => { // onmessage, and we set it to a function that receives event data or event arguments. And the data property of those contains the message from the server. The message from the server, as you've just seen, in the browser is a JSON string. So basically, we would like to parse that JSON string. And remember, we have that helper JavaScript function, updateCart, which we've used before. Now updateCart usually expects the full shopping cart, so all of the articles with their quantities. But what the server sends us is good enough for the purpose of updating the UI because the server just sends the info quantity of 42 for 42 items in total. So this is actually good enough for our purposes.
+                const ws = new WebSocket('ws://localhost:3000'); 
+                ws.onmessage = (e) => { 
                     updateCart(JSON.parse(e.data));
                 }
             });
